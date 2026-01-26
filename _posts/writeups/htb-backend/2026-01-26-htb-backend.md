@@ -6,6 +6,9 @@ tags: [pentesting, hackthebox,cybersecurity,writeups]
 pin: true
 ---
 
+
+![Screenshot0](/assets/writeups/backend/backend.png)
+
 #### Resumen de la máquina
 
 >Esta máquina presenta una infraestructura basada en una **API (FastAPI)** que expone diversos endpoints. La explotación comienza con la enumeración de rutas ocultas mediante fuzzing, lo que revela vulnerabilidades de **IDOR**. Tras escalar privilegios a nivel de API mediante el secuestro de la cuenta de administrador, se descubre un **LFI** y un **RCE** condicionado por una variable de depuración en el token JWT.
