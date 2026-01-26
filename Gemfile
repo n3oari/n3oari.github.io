@@ -2,9 +2,15 @@
 
 source "https://rubygems.org"
 
-gem "jekyll-theme-chirpy", "~> 7.4", ">= 7.4.1"
+# Usamos la versión de GitHub para saltar restricciones de versión de Ruby
+gem "jekyll-theme-chirpy", github: "cotes2020/jekyll-theme-chirpy", branch: "master"
 
-gem "html-proofer", "~> 5.0", group: :test
+gem "jekyll", ">= 4.3.0"
+gem "webrick", "~> 1.8"
+
+group :test do
+  gem "html-proofer", "~> 5.0"
+end
 
 platforms :mingw, :x64_mingw, :mswin, :jruby do
   gem "tzinfo", ">= 1", "< 3"
