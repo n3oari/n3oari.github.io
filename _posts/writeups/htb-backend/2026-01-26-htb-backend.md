@@ -65,7 +65,7 @@ Enumeración de usuarios via IDOR
 
 Campos requeridos para loggearse
 
-![Screenshot1](../../../assets/writeups/backend/2.png)
+![Screenshot2](/assets/writeups/backend/2.png)
 
 Registramos usuario en el endpoint que encontramso anteriormente
 `curl -X POST "http://backend.htb/api/v1/user/signup" -H "Content-Type: application/json" -d '{"email":"foo2@bar.com","password":"foo"}'`
@@ -73,11 +73,11 @@ Registramos usuario en el endpoint que encontramso anteriormente
 Nos logeamos
 ` curl "http://backend.htb/api/v1/user/login" -d "username=foo@bar.com&password=foo"`
 
-![Screenshot1](../../../assets/writeups/backend/3.png)
+![Screenshot3](/assets/writeups/backend/3.png)
 
 Seteamos el acces token a la funcionalidad de burpsuite match and replace para que cada solicitud que realicemos use el token
 
-![Screenshot1](../../../assets/writeups/backend/4.png)
+![Screenshot4](/assets/writeups/backend/4.png)
 
 
 Ahora tenemos acceso a la api **Fast Api** donde obtenemos acceso a diferentes funcionalidades.
@@ -85,4 +85,4 @@ Ahora tenemos acceso a la api **Fast Api** donde obtenemos acceso a diferentes f
 La primera que hacemos es obtener la user flag
 
 
-![Screenshot1](../../../assets/writeups/backend/5.png)
+![Screenshot5](/assets/writeups/backend/5.png)
