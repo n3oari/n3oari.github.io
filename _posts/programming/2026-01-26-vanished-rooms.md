@@ -2,9 +2,8 @@
 title: "vanished-rooms - a chat room CLI in Go"
 date: 2026-01-26 09:00:00 +0100
 categories: [proyectos]
-tags: [golang, programacion,privacidad]
+tags: [golang, programacion, privacidad]
 ---
-
 
 # VANISHED ROOMS
 
@@ -14,39 +13,35 @@ tags: [golang, programacion,privacidad]
 
 **Vanished Rooms** is a high-privacy, CLI-based messaging application developed in **Go**. It is designed to provide users with a secure, room-based communication environment where anonymity and data persistence are eliminated by design.
 
-> [🔗 Github repo(refactor branch)](https://github.com/n3oari/vanished-rooms)
+> [🔗 vanished-rooms repository](https://github.com/n3oari/vanished-rooms)
 
 ---
 
 ### Key Features
 
-* **Zero-Knowledge E2EE:** End-to-end encryption ensuring that only the participants can read the messages.
+- **Zero-Knowledge E2EE:** End-to-end encryption ensuring that only the participants can read the messages.
 
-* **Hybrid Encryption Architecture:**
+- **Hybrid Encryption Architecture:**
+  - **Symmetric Encryption (AES):** Used for high-speed message encryption within the room.
 
-    * **Symmetric Encryption (AES):** Used for high-speed message encryption within the room.
+  - **Asymmetric Encryption (RSA):** Utilized to securely distribute the AES session key among participants.
 
-    * **Asymmetric Encryption (RSA):** Utilized to securely distribute the AES session key among participants.
+- **Anti-Forensics & Zero Logs:** No activity logs or metadata are stored at any point.
 
-* **Anti-Forensics & Zero Logs:** No activity logs or metadata are stored at any point.
+- **Anonymity via Tor:** Native routing through the Tor network to mask user IP addresses.
 
-* **Anonymity via Tor:** Native routing through the Tor network to mask user IP addresses.
+- **Server Amnesia:** The server is configured to wipe all volatile memory and restart periodically, ensuring total data clearance.
 
-* **Server Amnesia:** The server is configured to wipe all volatile memory and restart periodically, ensuring total data clearance.
+- **User-Centric Privacy Logic:**
+  - **Instant Purge:** User data is immediately wiped upon disconnection.
 
-* **User-Centric Privacy Logic:**
-
-    * **Instant Purge:** User data is immediately wiped upon disconnection.
-
-    * **Self-Destructing Rooms:** Rooms are automatically deleted as soon as the last participant leaves.
-
+  - **Self-Destructing Rooms:** Rooms are automatically deleted as soon as the last participant leaves.
 
 ---
 
 ### P2P Architecture & Key Management
 
 The application follows a decentralized **Peer-to-Peer (P2P)** logic for key distribution:
-
 
 1.  **Room Creator (Host):** The user who initializes the room generates the master **AES key**.
 
@@ -76,9 +71,7 @@ go run main.go client -u <username> -p <password> -k <path-private-rsa-key>
 
 > You can also use the Makefile
 
-
 ### Help menu (connected)
-
 
 ```bash
 
@@ -94,5 +87,5 @@ go run main.go client -u <username> -p <password> -k <path-private-rsa-key>
 
 /help   None    Display the help menu.
 
-/quit   None    Disconnect and remove your user permanently. 
+/quit   None    Disconnect and remove your user permanently.
 ```
