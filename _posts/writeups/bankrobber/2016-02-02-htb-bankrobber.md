@@ -42,8 +42,6 @@ Destaco que podemos enumerar a otro usuario (gio), las bases de datos disponible
 
 #### XSS + CSRF + RCE
 
-En la misma página hay otra funcionalidad donde se nos permite ejecutar comandos, especificamente el comando dir. Este comando solo puede ser ejecutado desde local por motivos de seguridad.
-
 ![Screenshot5](/assets/writeups/bankrobber/csrf1.png)
 
 En la misma página hay otra funcionalidad que permite ejecutar comandos, específicamente el comando dir. Este comando solo puede ser ejecutado desde local por motivos de seguridad.
@@ -68,7 +66,7 @@ req1.send(cmd);
 
 ### Escalada de privilegios
 
-Encontramos un binario sospechoso (que no tenemos de ejecuciónn)
+Encontramos un binario sospechoso (que no tenemos permisos de ejecución)
 
 Tambien descubrimos que esta corriendo en un puerto que solo es visible desde la maquina interna (puerto 910)
 
