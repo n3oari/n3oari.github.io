@@ -10,6 +10,8 @@ pin: true
 
 #### Resumen de la máquina
 
+> Esta máquina presenta una aplicación web bancaria vulnerabile a ataques como robo de cookies a traves de XSS, inyecciones SQL, CSRF + RCE a traves de XSS. Finalmente es posible escalar de privilegios mediante la explotación de un binario con fuerza bruta.
+
 #### Reconocimiento
 
 ![Screenshot1](/assets/writeups/bankrobber/scan.png)
