@@ -72,7 +72,7 @@ Encontramos un binario sospechoso (que no tenemos de ejecuciónn)
 
 Tambien descubrimos que esta corriendo en un puerto que solo es visible desde la maquina interna (puerto 910)
 
-Con netcat nos conectamos a dicho puerto para ejecutra el binario
+Con netcat nos conectamos a dicho puerto para ejecutar el binario
 
 ![Screenshot7](/assets/writeups/bankrobber/escalada1.png)
 
