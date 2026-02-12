@@ -6,9 +6,10 @@ tags: [golang, programacion, privacidad]
 ---
 # VANISHED ROOMS
 
-<p align="center">
+
+<div align="center">
   <img src="/assets/vanished-rooms/logo-removebg-preview.png" alt="Vanished Rooms Logo" width="350">
-</p>
+</div>
 
 **Vanished Rooms** es una aplicación de mensajería basada en CLI (Interfaz de Línea de Comandos) desarrollada en **Go**. Está diseñada para ofrecer un entorno de comunicación seguro basado en salas, donde la anonimidad es la norma y la persistencia de datos es inexistente por diseño.
 
