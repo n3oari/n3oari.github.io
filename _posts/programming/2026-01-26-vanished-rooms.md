@@ -4,88 +4,75 @@ date: 2026-01-26 09:00:00 +0100
 categories: [proyectos]
 tags: [golang, programacion, privacidad]
 ---
-
 # VANISHED ROOMS
 
-![Screenshot0](/assets/vanished-rooms/gopher.png)
+<p align="center">
+  <img src="/assets/vanished-rooms/logo-removebg-preview.png" alt="Vanished Rooms Logo" width="350">
+</p>
 
-![Screenshot0](/assets/vanished-rooms/sv.png)
+**Vanished Rooms** es una aplicación de mensajería basada en CLI (Interfaz de Línea de Comandos) desarrollada en **Go**. Está diseñada para ofrecer un entorno de comunicación seguro basado en salas, donde la anonimidad es la norma y la persistencia de datos es inexistente por diseño.
 
-**Vanished Rooms** is a high-privacy, CLI-based messaging application developed in **Go**. It is designed to provide users with a secure, room-based communication environment where anonymity and data persistence are eliminated by design.
-
-> [🔗 vanished-rooms repository](https://github.com/n3oari/vanished-rooms)
-
----
-
-### Key Features
-
-- **Zero-Knowledge E2EE:** End-to-end encryption ensuring that only the participants can read the messages.
-
-- **Hybrid Encryption Architecture:**
-  - **Symmetric Encryption (AES):** Used for high-speed message encryption within the room.
-
-  - **Asymmetric Encryption (RSA):** Utilized to securely distribute the AES session key among participants.
-
-- **Anti-Forensics & Zero Logs:** No activity logs or metadata are stored at any point.
-
-- **Anonymity via Tor:** Native routing through the Tor network to mask user IP addresses.
-
-- **Server Amnesia:** The server is configured to wipe all volatile memory and restart periodically, ensuring total data clearance.
-
-- **User-Centric Privacy Logic:**
-  - **Instant Purge:** User data is immediately wiped upon disconnection.
-
-  - **Self-Destructing Rooms:** Rooms are automatically deleted as soon as the last participant leaves.
+> [🔗 Acceder al repositorio oficial en GitHub](https://github.com/n3oari/vanished-rooms)
 
 ---
 
-### P2P Architecture & Key Management
+## Características Principales
 
-The application follows a decentralized **Peer-to-Peer (P2P)** logic for key distribution:
+* **Zero-Knowledge E2EE:** Cifrado de extremo a extremo que garantiza que solo los participantes puedan leer los mensajes.
+* **Arquitectura de Cifrado Híbrida:**
+    * **AES (Simétrico):** Para cifrado de mensajes de alta velocidad en la sala.
+    * **RSA (Asimétrico):** Para distribuir de forma segura la clave de sesión AES entre participantes.
+* **Anti-Forensics & Zero Logs:** Sin registros de actividad ni metadatos.
+* **Anonimato vía Tor:** Enrutamiento nativo a través de la red Tor para ocultar direcciones IP.
+* **Amnesia del Servidor:** Configurado para borrar toda la memoria volátil y reiniciarse periódicamente.
+* **Lógica de Privacidad Centrada en el Usuario:**
+    * **Purga Instantánea:** Los datos del usuario se borran al desconectarse.
+    * **Salas Autodestruibles:** Las salas desaparecen cuando sale el último participante.
 
-1.  **Room Creator (Host):** The user who initializes the room generates the master **AES key**.
-
-2.  **Key Distribution:** The host is responsible for encrypting the AES key with the **RSA public keys** of joining participants and distributing it securely.
-
-3.  **Dynamic Leadership:** If the host leaves the room, the role is automatically reassigned to the next user in line (determined by joining timestamp), ensuring the room's continuity and security without a central authority.
+> **Nota de Transparencia:** El servidor opera bajo el principio de "caja de cristal". El tráfico cifrado es públicamente visible para auditoría, pero la capa E2EE hace que sea matemáticamente imposible de descifrar sin las claves privadas de los participantes.
 
 ---
 
-### Logic Sequence
+## Arquitectura P2P y Gestión de Claves
 
-![Screenshot0](/assets/vanished-rooms/secuencia.png)
+La aplicación sigue una lógica **Peer-to-Peer (P2P)** descentralizada para la distribución de claves:
 
-### Usage
+1.  **Creador (Host):** Genera la clave maestra **AES**.
+2.  **Distribución:** El host cifra la clave AES con las **claves públicas RSA** de los nuevos integrantes.
+3.  **Liderazgo Dinámico:** Si el host sale, el rol se reasigna automáticamente al siguiente usuario (según el *timestamp* de entrada), garantizando continuidad sin autoridad central.
+
+
+#### Secuencia Lógica
+![Logic Sequence Diagram](/assets/vanished-rooms/secuencia.png)
+
+#### Diagrama de Clases
+![Class diagram](/assets/vanished-rooms/diagramaclase.png)
+
+#### Ejemplo rooms
+
+![Class diagram](/assets/vanished-rooms/users.png)
+
+---
+
+
+1. Tener el servicio de **Tor** ejecutándose localmente.
+2. Verificar si el servidor Onion está en línea:
+   `http://wuopotpej2uap77giiz7xlpw5mqjdcmpjftmnxsprp6thjib2oyunoid.onion/`
+
+
+
+![Onion](/assets/vanished-rooms/onion.png)
 
 ```bash
-
+### Clonar repositorio
 git clone [https://github.com/n3oari/vanished-rooms.git](https://github.com/n3oari/vanished-rooms.git)
+cd vanished-rooms
 
+### Instalar dependencias
 go mod tidy
 
-go run main.go server
+### Generar clave RSA privada
+openssl genrsa -out privada.pem 2048
 
-go run main.go client -u <username> -p <password> -k <path-private-rsa-key>
-
-```
-
-> You can also use the Makefile
-
-### Help menu (connected)
-
-```bash
-
-/create -n <name> -p <pass> --private <y/n> Create a new room and join automatically.
-
-/rooms  None    List all currently active rooms.
-
-/join   -n <name> -p <pass> Join an existing room using credentials.
-
-/leave-room None    Exit the current room.
-
-/users  None    List all users in your current room.
-
-/help   None    Display the help menu.
-
-/quit   None    Disconnect and remove your user permanently.
-```
+### Ejecutar cliente
+go run main.go client -u <usuario> -p <password> -k <ruta-clave-rsa>
