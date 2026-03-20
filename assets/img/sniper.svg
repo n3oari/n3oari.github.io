@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Outer circle -->
+  <circle cx="16" cy="16" r="14" stroke="red" stroke-width="1.5" fill="none" opacity="0.9"/>
+  <!-- Inner circle -->
+  <circle cx="16" cy="16" r="4" stroke="red" stroke-width="1" fill="none" opacity="0.9"/>
+  <!-- Center dot -->
+  <circle cx="16" cy="16" r="1.5" fill="red" opacity="1"/>
+  <!-- Cross lines -->
+  <line x1="16" y1="1" x2="16" y2="10" stroke="red" stroke-width="1.5" opacity="0.9"/>
+  <line x1="16" y1="22" x2="16" y2="31" stroke="red" stroke-width="1.5" opacity="0.9"/>
+  <line x1="1" y1="16" x2="10" y2="16" stroke="red" stroke-width="1.5" opacity="0.9"/>
+  <line x1="22" y1="16" x2="31" y2="16" stroke="red" stroke-width="1.5" opacity="0.9"/>
+</svg>
