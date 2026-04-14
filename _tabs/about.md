@@ -9,9 +9,9 @@ Entusiasta de la ciberseguridad, el desarrollo de software y redes. Comparto pro
 
 ### Certificaciones Ciberseguridad Actuales
 
-<div style="display: flex; justify-content: flex-start; gap: 10px;">
-  <img src="/assets/img/ejpt.png" alt="ejpt" width="150">
- <img src="/assets/img/bscp.png" alt="BSCP" width="150">  
+<div style="display: flex; justify-content: flex-start; gap: 30px; align-items: center;">
+  <img src="/assets/img/ejpt.png" alt="ejpt" style="height: 150px; width: 120px; object-fit: contain;">
+  <img src="/assets/img/bscp.png" alt="BSCP" style="height: 200px; width: 120px; object-fit: contain;">  
 </div>
 
 ### Preparándome ahora mismo
