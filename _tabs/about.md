@@ -11,7 +11,7 @@ Entusiasta de la ciberseguridad, el desarrollo de software y redes. Comparto pro
 
 <div style="display: flex; justify-content: flex-start; gap: 30px; align-items: center;">
   <img src="/assets/img/ejpt.png" alt="ejpt" style="height: 150px; width: 120px; object-fit: contain;">
-  <img src="/assets/img/bscp.png" alt="BSCP" style="height: 200px; width: 120px; object-fit: contain;">  
+  <img src="/assets/img/bscp.png" alt="BSCP" style="height: 150px; width: 120px; object-fit: contain;">  
 </div>
 
 ### Preparándome ahora mismo
