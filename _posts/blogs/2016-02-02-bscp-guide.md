@@ -1,5 +1,5 @@
 ---
-title: BSCP - MI<S-D-lt> GUIA DE EXAMEN
+title: BSCP - MI GUIA DE EXAMEN
 date: 2026-02-02 06:00:00 +0100
 categories: [certificacion]
 tags: [certificacion, guia]
