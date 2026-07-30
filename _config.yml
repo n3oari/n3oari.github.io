@@ -16,10 +16,10 @@ timezone:
 
 title: n3oari # the main title
 
-tagline: Cybersecurity && Software Development # it will display as the subtitle
+tagline: :) # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  Cybersecyruty, pentesting, software development and more
+  Cybersecyruty, pentesting, redteaming, software development and more
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -27,17 +27,15 @@ url: ""
 
 github:
   username: n3oari
-twitter:
-  username: twitter_username # change to your Twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: n3oari
-  email: example@domain.com # change to your email address
+  email: javiercaballerosec@proton.me # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your Twitter homepage
+    # - https://twitter.com/username # change to your Twitter homepage
     - https://github.com/n3oari # change to your GitHub homepage
     -
     # Uncomment below to add more social links
