@@ -53,8 +53,15 @@ order: 4
 
 ### Certificaciones Ciberseguridad
 
+
 <div class="cert-carousel" id="certCarousel">
   <div class="cert-track">
+    <div class="cert-slide">
+      <img src="/assets/img/CRTP_CERT.jpg" alt="CRTP">
+      <div class="cert-caption">
+        <span class="cert-name">CRTP</span>
+      </div>
+    </div>
     <div class="cert-slide">
       <img src="/assets/img/bscp.jpeg" alt="BSCP">
       <div class="cert-caption">
@@ -65,12 +72,6 @@ order: 4
       <img src="/assets/img/ejpt.jpg" alt="eJPT">
       <div class="cert-caption">
         <span class="cert-name">eJPT</span>
-      </div>
-    </div>
-    <div class="cert-slide">
-      <img src="/assets/img/crtp.png" alt="CRTP">
-      <div class="cert-caption">
-        <span class="cert-name">CRTP</span>
       </div>
     </div>
   </div>
