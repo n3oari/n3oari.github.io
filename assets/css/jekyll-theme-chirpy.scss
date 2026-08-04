@@ -12,3 +12,10 @@
 * {
   cursor: url('/assets/img/sniper.svg') 16 16, auto;
 }
+
+/* Ocultar la pestaña "Tags" del menú lateral sin eliminar la página /tags/
+   (esa página tiene que seguir existiendo o rompe los enlaces internos
+   de cada página individual de tag) */
+#sidebar a[href$="/tags/"] {
+  display: none !important;
+}
