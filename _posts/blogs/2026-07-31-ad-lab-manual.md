@@ -28,7 +28,7 @@ La idea es poder aplicar cada misconfiguration de forma aislada, entender exacta
 
 ## Objetivo del laboratorio
 
-Esto **no** es un entorno ya montado con una ruta de explotación lógica y realista de principio a fin, donde solo haya que enumerar, explotar, escalar privilegios y moverse lateralmente — ese es el enfoque de proyectos ya conocidos como GOAD, y no es lo que se busca aquí.
+Esto **no** es un entorno ya montado con una ruta de ataque predefinida de principio a fin, al estilo de proyectos como GOAD. No es ese el enfoque aquí.
 
 El objetivo es que puedas levantar tu propio entorno, entender cada pieza que lo compone, y decidir tú mismo qué misconfiguraciones introducir y cómo encajan entre sí — en lugar de heredar un escenario ya diseñado por otra persona.
 
@@ -54,11 +54,11 @@ Máquinas a desplegar, según la topología:
 | `us-happy-sql` | SQL Server | `us.happy.corp` | 192.168.101.15 |
 | `happy-n3oari` | Windows 10 — equipo del atacante (assumed breach) | `happy.corp` | 192.168.101.50 |
 
-Todas las máquinas comparten la misma red **host-only** de VMware (`ADnet`, subred `192.168.101.0/24`, sin DHCP) — la misma subred vale tanto para `happy.corp` como para `us.happy.corp`, no hace falta una red separada por dominio.
+Todas las máquinas comparten la misma red **host-only** de VMware (subred `192.168.101.0/24`, sin DHCP) — crea una interfaz host-only y conecta todas las VMs a ella. La misma subred vale tanto para `happy.corp` como para `us.happy.corp`, no hace falta una red separada por dominio.
 
 Para cada VM: instalar el sistema operativo, renombrar el equipo, y configurar IP estática (sin gateway, ya que es una red aislada sin salida a internet) apuntando como DNS primario al DC correspondiente de su dominio (`happy-dc` para las máquinas de `happy.corp`, `us-happy-dc` para las de `us.happy.corp`).
 
-En las máquinas **Server Core** (sin GUI), esto se hace por PowerShell — mismos comandos valen igual en las que sí tienen GUI:
+Como recomendación, para ahorrar recursos conviene instalar las máquinas sin interfaz gráfica (Server Core). Esto se configura por PowerShell:
 
 ```powershell
 Rename-Computer -NewName "happy-mgmt" -Restart
@@ -159,9 +159,9 @@ Misconfiguraciones cubiertas en esta documentación:
 - [x] Kerberoasting
 - [x] AS-REP Roasting
 - [x] Delegaciones
-  - [x] Sin restricciones (Unconstrained)
-  - [x] Restringida (Constrained)
-  - [x] Basada en recursos (RBCD)
+  - [x] Unconstrained Delegation
+  - [x] Constrained Delegation
+  - [x] Resource-Based Constrained Delegation (RBCD)
 - [x] SQL Server mal integrado en el dominio
 - [x] Plantillas de certificado (ADCS) vulnerables
 
@@ -388,6 +388,9 @@ Durante la instalación:
 - Service Logon: happy\svc_jenkins / Password123!
 - Plugins: "Select plugins to install" → desmarcar todos (instalación mínima)
 - Usuario administrador de Jenkins: admin / admin   ← credenciales por defecto sin cambiar, la misconfiguration principal de este escenario
+
+Jenkins escucha por defecto en el puerto 8080. El firewall de Windows lo bloquea para tráfico entrante, así que hay que abrir el puerto para poder acceder al panel desde otras máquinas del dominio:
+netsh advfirewall firewall add rule name="Jenkins HTTP" dir=in action=allow protocol=TCP localport=8080
 ```
 
 Con acceso al panel de administración vía esas credenciales por defecto, la superficie de ataque queda abierta: Jenkins permite definir "build steps" que se ejecutan con los privilegios de la cuenta de servicio (`svc_jenkins`), y su consola de scripts Groovy ofrece ejecución de código arbitrario directamente sobre el sistema operativo — un vector de RCE clásico una vez dentro del panel.
@@ -396,12 +399,12 @@ Con acceso al panel de administración vía esas credenciales por defecto, la su
 
 Las delegaciones Kerberos permiten que un servicio actúe en nombre de un usuario frente a otro servicio. Mal configuradas, son una de las rutas de escalada y movimiento lateral más potentes en cualquier entorno de AD.
 
-**Delegación sin restricciones (Unconstrained Delegation)** — el equipo recibe el TGT completo de cualquier usuario que se autentique contra él, y puede reutilizarlo para suplantarlo frente a cualquier otro servicio del dominio.
+**Unconstrained Delegation** — el equipo recibe el TGT completo de cualquier usuario que se autentique contra él, y puede reutilizarlo para suplantarlo frente a cualquier otro servicio del dominio.
 ```powershell
 Set-ADComputer -Identity "happy-mgmt" -TrustedForDelegation $true
 ```
 
-**Delegación restringida (Constrained Delegation)** — la cuenta de servicio solo puede delegar hacia los servicios explícitamente listados en `msDS-AllowedToDelegateTo`.
+**Constrained Delegation** — la cuenta de servicio solo puede delegar hacia los servicios explícitamente listados en `msDS-AllowedToDelegateTo`.
 ```powershell
 $pass = ConvertTo-SecureString "Password123!" -AsPlainText -Force
 New-ADUser -Name "svc_web" -SamAccountName "svc_web" -AccountPassword $pass -Enabled $true
@@ -421,7 +424,7 @@ Set-ADUser -Identity "svc_web" -ServicePrincipalNames @{
 }
 ```
 
-**Delegación restringida basada en recursos (RBCD)** — a diferencia de las anteriores, aquí es el objeto destino el que decide quién puede delegar hacia él. Si un atacante tiene `GenericWrite`/`GenericAll` sobre un objeto equipo, puede configurar esa relación de confianza él mismo.
+**Resource-Based Constrained Delegation (RBCD)** — a diferencia de las anteriores, aquí es el objeto destino el que decide quién puede delegar hacia él. Si un atacante tiene `GenericWrite`/`GenericAll` sobre un objeto equipo, puede configurar esa relación de confianza él mismo.
 ```powershell
 dsacls "CN=HAPPY-DC,OU=Domain Controllers,DC=happy,DC=corp" /G "$((Get-ADUser n3oari).SID.Value):GW"
 ```
@@ -529,10 +532,10 @@ Antes de empezar a practicar sobre el laboratorio, conviene confirmar que cada m
 # Shares expuestos
 Get-SmbShare | Select Name, Path
 
-# Delegación sin restricciones
+# Unconstrained Delegation
 Get-ADComputer -Filter * -Properties TrustedForDelegation | Select Name, TrustedForDelegation
 
-# Delegación restringida
+# Constrained Delegation
 Get-ADUser -Filter * -Properties msDS-AllowedToDelegateTo, TrustedToAuthForDelegation |
     Where-Object { $_.'msDS-AllowedToDelegateTo' } |
     Select Name, 'msDS-AllowedToDelegateTo'
