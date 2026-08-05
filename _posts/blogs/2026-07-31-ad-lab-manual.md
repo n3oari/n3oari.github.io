@@ -3,7 +3,7 @@ title: "HappyCorp - Entorno de AD con misconfiguraciones desde Cero"
 date: 2026-07-31 10:00:00 +0100
 categories: [proyectos]
 tags: [active-directory, homelab, crtp, redteam, windows]
-pin: false
+pin: true
 ---
 
 <pre style="background: none; border: none; box-shadow: none; padding: 0; text-align: center; font-size: 1rem; line-height: 1.2;">
