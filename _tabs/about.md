@@ -206,3 +206,70 @@ order: 4
   carousel.addEventListener('mouseleave', () => { timer = setInterval(() => goTo(index + 1), 4000); });
 })();
 </script>
+
+### Otras Certificaciones
+
+<div class="cert-carousel" id="certCarousel2">
+  <div class="cert-track">
+    <div class="cert-slide">
+      <img src="/assets/img/Certiport%20IT%20Specialist%20-%20Databases-1.png" alt="Database Specialist">
+      <div class="cert-caption">
+        <span class="cert-name">Database Specialist</span>
+      </div>
+    </div>
+    <div class="cert-slide">
+      <img src="/assets/img/Certiport%20IT%20Specialist%20-%20Java-1.png" alt="Java Specialist">
+      <div class="cert-caption">
+        <span class="cert-name">Java Specialist</span>
+      </div>
+    </div>
+    <div class="cert-slide">
+      <img src="/assets/img/Cisco%20Linux%20fundamentals-1.png" alt="Linux Fundamentals">
+      <div class="cert-caption">
+        <span class="cert-name">Linux Fundamentals</span>
+      </div>
+    </div>
+    <div class="cert-slide">
+      <img src="/assets/img/Scrum-1.png" alt="Scrum">
+      <div class="cert-caption">
+        <span class="cert-name">Scrum</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="cert-btn cert-prev" aria-label="Anterior">&#10094;</button>
+  <button class="cert-btn cert-next" aria-label="Siguiente">&#10095;</button>
+
+  <div class="cert-dots"></div>
+</div>
+
+<script>
+(function () {
+  const carousel = document.getElementById('certCarousel2');
+  const track = carousel.querySelector('.cert-track');
+  const slides = carousel.querySelectorAll('.cert-slide');
+  const dotsWrap = carousel.querySelector('.cert-dots');
+  let index = 0;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'cert-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = dotsWrap.querySelectorAll('.cert-dot');
+
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((d, di) => d.classList.toggle('active', di === index));
+  }
+
+  carousel.querySelector('.cert-prev').addEventListener('click', () => goTo(index - 1));
+  carousel.querySelector('.cert-next').addEventListener('click', () => goTo(index + 1));
+
+  let timer = setInterval(() => goTo(index + 1), 4000);
+  carousel.addEventListener('mouseenter', () => clearInterval(timer));
+  carousel.addEventListener('mouseleave', () => { timer = setInterval(() => goTo(index + 1), 4000); });
+})();
+</script>
